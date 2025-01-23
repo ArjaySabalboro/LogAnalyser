@@ -37,3 +37,4 @@ echo "Top 5 user agents:"
 awk -F'"' '{print $6}' "$LOGFILE" | sort | uniq -c | sort -rn | head -5 | awk '{sub($1 FS, ""); print $0 " - " $1 " requests"}'
 
 
+// https://roadmap.sh/projects/nginx-log-analyser
