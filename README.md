@@ -1,40 +1,73 @@
-# LogAnalyser
-Log Analyser
+# Log Analysis Script
 
-#!/bin/bash
+This is a shell script that analyzes web server log files and provides insights such as:
+- Top 5 IP addresses with the most requests
+- Top 5 most requested paths
+- Top 5 response status codes
+- Top 5 user agents
 
-if [ $# -ne 1 ]; then
-    echo "Usage: $0 <logfile>"
-    exit 1
-fi
+## Requirements
+- Linux/macOS with a shell environment
+- `awk`, `sort`, `uniq` (pre-installed on most Unix-based systems)
 
-LOGFILE="$1"
+## Installation
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/yourusername/log-analysis.git
+   cd log-analysis
+   ```
+2. Make the script executable:
+   ```bash
+   chmod +x analyze_logs.sh
+   ```
 
-if [ ! -f "$LOGFILE" ]; then
-    echo "Error: File '$LOGFILE' not found!"
-    exit 1
-fi
+## Usage
+Run the script with a log file as an argument:
+```bash
+./analyze_logs.sh access.log
+```
 
-echo "Analyzing log file: $LOGFILE"
+## Example Log Entry
+```
+178.128.94.113 - - [04/Oct/2024:00:00:18 +0000] "GET /v1-health HTTP/1.1" 200 51 "-" "DigitalOcean Uptime Probe 0.22.0 (https://digitalocean.com)"
+```
 
-# Extract and count occurrences of IP addresses
-echo "Top 5 IP addresses with the most requests:"
-awk '{print $1}' "$LOGFILE" | sort | uniq -c | sort -rn | head -5 | awk '{print $2 " - " $1 " requests"}'
-echo
+## Sample Output
+```
+Analyzing log file: access.log
 
-# Extract and count occurrences of request paths
-echo "Top 5 most requested paths:"
-awk -F'"' '{print $2}' "$LOGFILE" | awk '{print $2}' | sort | uniq -c | sort -rn | head -5 | awk '{print $2 " - " $1 " requests"}'
-echo
+Top 5 IP addresses with the most requests:
+178.128.94.113 - 50 requests
+45.76.135.253 - 40 requests
+192.168.0.1 - 20 requests
+10.0.0.2 - 10 requests
+142.93.143.8 - 5 requests
 
-# Extract and count occurrences of response status codes
-echo "Top 5 response status codes:"
-awk '{print $9}' "$LOGFILE" | sort | uniq -c | sort -rn | head -5 | awk '{print $2 " - " $1 " requests"}'
-echo
+Top 5 most requested paths:
+/v1-health - 70 requests
+/api/v1/products - 50 requests
+/api/v1/orders - 20 requests
+/api/v1/users - 10 requests
+/api/v1/payments - 5 requests
 
-# Extract and count occurrences of user agents
-echo "Top 5 user agents:"
-awk -F'"' '{print $6}' "$LOGFILE" | sort | uniq -c | sort -rn | head -5 | awk '{sub($1 FS, ""); print $0 " - " $1 " requests"}'
+Top 5 response status codes:
+200 - 120 requests
+404 - 30 requests
+500 - 10 requests
+301 - 5 requests
+401 - 2 requests
 
+Top 5 user agents:
+DigitalOcean Uptime Probe 0.22.0 (https://digitalocean.com) - 80 requests
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 - 30 requests
+curl/7.68.0 - 20 requests
+Python-urllib/3.8 - 10 requests
+PostmanRuntime/7.29.0 - 5 requests
+```
 
-// https://roadmap.sh/projects/nginx-log-analyser
+## License
+This project is licensed under the MIT License.
+
+## Author
+[Arjay Sabalboro] - [Github](https://github.com/ArjaySabalboro/)
+
