@@ -13,7 +13,7 @@ This is a shell script that analyzes web server log files and provides insights 
 ## Installation
 1. Clone this repository:
    ```bash
-   git clone https://github.com/yourusername/log-analysis.git
+   git clone https://github.com/ArjaySabalboro/LogAnalysers.git
    cd log-analysis
    ```
 2. Make the script executable:
